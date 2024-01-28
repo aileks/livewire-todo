@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('task');
             $table->boolean('completed')->default(false);
+            $table->boolean('editing')->default(false);
             $table->timestamps();
         });
     }

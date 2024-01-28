@@ -24,7 +24,7 @@ class TodoList extends Component
         return view('livewire.todo-list', ['todos' => Todo::all()]);
     }
 
-    public function updateTodo($id) //update
+    public function editTodo($id) //update
     {
         $todo = Todo::find($id);
         $todo->completed = !$todo->completed;
