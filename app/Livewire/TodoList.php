@@ -8,15 +8,16 @@ use App\Models\Todo;
 class TodoList extends Component
 {
     public $task;
+    public $newTask;
 
     public function addTodo() // create
     {
         $this->validate([
-            'task' => 'required'
+            'newTask' => 'required|max:100'
         ]);
 
-        Todo::create(['task' => $this->task, 'completed' => false]);
-        $this->task = '';
+        Todo::create(['task' => $this->newTask, 'completed' => false]);
+        $this->newTask = '';
     }
 
     public function render() // read
@@ -24,17 +25,34 @@ class TodoList extends Component
         return view('livewire.todo-list', ['todos' => Todo::all()]);
     }
 
-    public function editTodo($id) //update
+    public function startEditing(Todo $todo)
     {
-        $todo = Todo::find($id);
-        $todo->completed = !$todo->completed;
-        $todo->save();
+        $this->task = $todo->task;
+        $todo->update(['editing' => true]);
     }
 
-    public function deleteTodo($id) // delete
+    public function stopEditing(Todo $todo)
+    {
+        $this->task = '';
+        $todo->update(['editing' => false]);
+    }
+
+    public function updateTodo($id) // update
     {
         $todo = Todo::find($id);
-        $todo->delete();
+        $todo->update(['task' => $this->task]);
+        $todo->update(['editing' => false]);
+        $this->task = '';
+        session()->flash('message', 'Task successfully updated!');
+    }
 
+    public function completeTodo(Todo $todo) //update
+    {
+        $todo->update(['completed' => !$todo->completed]);
+    }
+
+    public function deleteTodo(Todo $todo) // delete
+    {
+        $todo->delete();
     }
 }

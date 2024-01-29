@@ -12,7 +12,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="text-gray-50 bg-zinc-900">
+<body class="antialiased text-gray-50 bg-zinc-900">
     {{ $slot }}
 
     @livewireScripts
