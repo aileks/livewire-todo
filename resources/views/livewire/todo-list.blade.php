@@ -7,8 +7,9 @@
 
     <form
         class="text-gray-800"
-        wire:submit.prevent="addTodo"
+        wire:submit.prevent="addTask"
     >
+        @csrf
         <input
             class="p-2 m-2 border rounded-sm border-slate-700"
             type="text"
@@ -96,7 +97,6 @@
         @endif
     </div>
 
-
     <div class="mt-6">
         <x-button
             class="mx-6 text-sm text-gray-300 bg-sky-900"
@@ -129,4 +129,4 @@
             {{ session('message') }}
         </div>
     @endif
-    </>
+</div>

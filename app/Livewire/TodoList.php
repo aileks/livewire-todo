@@ -10,7 +10,7 @@ class TodoList extends Component
     public $task;
     public $newTask;
 
-    public function addTodo() // create
+    public function addTask() // create
     {
         $this->validate([
             'newTask' => 'required|max:100'

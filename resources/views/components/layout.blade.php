@@ -8,14 +8,14 @@
         content="width=device-width, initial-scale=1.0"
     >
     <title>Livewire To-Dos</title>
-    @livewireStyles
     @vite('resources/css/app.css')
+    @livewireStyles
+    @livewireScripts
 </head>
 
 <body class="antialiased text-gray-50 bg-zinc-900">
     {{ $slot }}
 
-    @livewireScripts
 </body>
 
 </html>
