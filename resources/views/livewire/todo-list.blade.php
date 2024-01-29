@@ -1,17 +1,73 @@
-<div class="flex mt-24">
-    <div
-        class="flex flex-col items-center w-1/3 p-8 m-auto border rounded-sm shadow-light border-slate-800 bg-slate-800">
-        <header class="mb-8">
-            <h1 class="text-2xl font-bold underline">To-Do List</h1>
-        </header>
+{{-- TODO: Add animations/transitions --}}
+<div
+    class="flex flex-col items-center p-8 m-auto mt-16 border rounded-lg lg:w-1/3 sm:w-full shadow-light border-slate-800 bg-slate-800">
+    <header class="mb-6">
+        <h1 class="text-4xl font-bold underline">To-Do List</h1>
+    </header>
 
-        <div class="w-[85%] p-2 m-2 text-gray-800 rounded shadow bg-slate-200">
+    <form
+        class="text-gray-800"
+        wire:submit.prevent="addTodo"
+    >
+        <input
+            class="p-2 m-2 border rounded-sm border-slate-700"
+            type="text"
+            wire:model="newTask"
+            placeholder="New Task"
+        >
+    </form>
+
+    <div class="w-3/4 p-2 m-2 text-gray-800 rounded shadow bg-slate-200">
+        @if ($todos->isEmpty())
+            <div class="text-xl text-center text-gray-800">
+                No tasks yet. Add a new task above.
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#475569"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <rect
+                        x="3"
+                        y="3"
+                        width="18"
+                        height="18"
+                        rx="2"
+                        ry="2"
+                    ></rect>
+                    <line
+                        x1="9"
+                        y1="9"
+                        x2="15"
+                        y2="9"
+                    ></line>
+                    <line
+                        x1="9"
+                        y1="13"
+                        x2="15"
+                        y2="13"
+                    ></line>
+                    <line
+                        x1="9"
+                        y1="17"
+                        x2="15"
+                        y2="17"
+                    ></line>
+                </svg>
+            </div>
+        @else
             <ul class="list-insde">
                 @foreach ($todos as $todo)
-                    <span class="text-xs font-bold text-gray-500">
+                    <span class="text-sm font-bold text-gray-500">
                         Added {{ $todo->created_at->format('M j') }}
                     </span>
-                    <li wire:dblclick="startEditing({{ $todo->id }})">
+                    <li
+                        class="text-lg"
+                        wire:dblclick="startEditing({{ $todo->id }})"
+                    >
                         @if ($todo->editing)
                             <input
                                 class="mr-1"
@@ -28,7 +84,7 @@
                             <input
                                 class="mr-1"
                                 type="checkbox"
-                                wire:model="todo.completed"
+                                wire:model="completed"
                                 wire:click="completeTodo({{ $todo->id }})"
                                 {{ $todo->completed ? 'checked' : '' }}
                             >
@@ -37,25 +93,23 @@
                     </li>
                 @endforeach
             </ul>
-        </div>
+        @endif
+    </div>
 
-        <form
-            class="mt-6 text-gray-800"
-            wire:submit.prevent="addTodo"
+
+    <div class="mt-6">
+        <x-button
+            class="mx-6 text-sm text-gray-300 bg-sky-900"
+            wire:click="markAllAsCompleted"
         >
-            <input
-                class="p-2 m-2 border rounded-sm border-slate-700"
-                type="text"
-                wire:model="newTask"
-                placeholder="New Task"
-            >
-            <x-button
-                class="px-4 py-2 hover:bg-emerald-800 bg-emerald-700"
-                type="submit"
-            >
-                Add
-            </x-button>
-        </form>
+            Mark All As Completed
+        </x-button>
+        <x-button
+            class="mx-6 text-sm text-gray-300 bg-sky-900"
+            wire:click="removeCompleted"
+        >
+            Remove Completed
+        </x-button>
     </div>
 
     @if (session()->has('message'))
@@ -75,4 +129,4 @@
             {{ session('message') }}
         </div>
     @endif
-</div>
+    </>
