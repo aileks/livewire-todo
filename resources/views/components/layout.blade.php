@@ -10,12 +10,15 @@
     <title>Livewire To-Dos</title>
     @vite('resources/css/app.css')
     @livewireStyles
-    @livewireScripts
 </head>
 
 <body class="antialiased text-gray-50 bg-zinc-900">
     {{ $slot }}
 
+    @livewireScripts
+    <script>
+        Livewire.onPageExpired((response, message) => {})
+    </script>
 </body>
 
 </html>
